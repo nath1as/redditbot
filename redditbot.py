@@ -49,6 +49,7 @@ def get_saved_comments():
         with open("comments_replied_to.txt", "r") as comment_file:
             comms_replied_to = comment_file.read()
             comms_replied_to = comms_replied_to.split("\n")
+            comms_replied_to = filter(None, comms_replied_to)
 
     return comms_replied_to
 
