@@ -1,4 +1,5 @@
 import time
+import os
 import praw
 import config
 
@@ -33,17 +34,23 @@ def run_bot(reddit_instance, comments_replied_to):
             print("Replied to comment" + comment.id)
             comments_replied_to.append(comment.id)
 
+            with open("comments_replied_to.text", "a") as comment_file:
+                comment_file.write(comment.id + "\n")
+
     print("Sleeping for 10 seconds ...")
     time.sleep(10)
 
 
 def get_saved_comments():
     """file with comments replied to"""
-    with open("comments_replied_to.txt", "r") as comment_file:
-        comm_replied_to = comment_file.read()
-        comm_replied_to = comm_replied_to.split("\n")
+    if not os.path.isfile("comments_replied_to.txt"):
+        comms_replied_to = []
+    else:
+        with open("comments_replied_to.txt", "r") as comment_file:
+            comms_replied_to = comment_file.read()
+            comms_replied_to = comms_replied_to.split("\n")
 
-    return comm_replied_to
+    return comms_replied_to
 
 
 while True:
