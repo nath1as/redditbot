@@ -18,25 +18,29 @@ def bot_login():
     return r_i
 
 
-def run_bot(reddit_instance):
+def run_bot(reddit_instance, comments_replied_to):
     """bot implementation"""
 
-    comments_replied_to = []
     keyword = 'bot'
 
     print("Obtaining 25 comments ...")
     for comment in reddit_instance.subreddit('test').comments(limit=25):
-        if comment.id not in comments_replied_to:
-            if keyword in comment.body:
-                print("String %s found in " % keyword + comment.id)
-                # comment.reply("wwaaat")
-                print("Replied to comment" + comment.id)
-                comments_replied_to.append(comment.id)
+        if comment.id not in comments_replied_to\
+         and keyword in comment.body\
+         and not comment.author == reddit_instance.user.me():
+            print("String %s found in " % keyword + comment.id)
+            # comment.reply("wwaaat")
+            print("Replied to comment" + comment.id)
+            comments_replied_to.append(comment.id)
 
     print("Sleeping for 10 seconds ...")
     time.sleep(10)
 
 
+COMMENT_LIST = []  # type: List[str]
+
+
 while True:
     R = bot_login()
-    run_bot(R)
+    run_bot(R, COMMENT_LIST)
+    print(COMMENT_LIST)
