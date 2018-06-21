@@ -37,10 +37,17 @@ def run_bot(reddit_instance, comments_replied_to):
     time.sleep(10)
 
 
-COMMENT_LIST = []  # type: List[str]
+def get_saved_comments():
+    """file with comments replied to"""
+    with open("comments_replied_to.txt", "r") as comment_file:
+        comm_replied_to = comment_file.read()
+        comm_replied_to = comm_replied_to.split("\n")
+
+    return comm_replied_to
 
 
 while True:
     R = bot_login()
-    run_bot(R, COMMENT_LIST)
-    print(COMMENT_LIST)
+    COMMENTS_REPLIED_TO = get_saved_comments()
+    run_bot(R, COMMENTS_REPLIED_TO)
+    print(COMMENTS_REPLIED_TO)
